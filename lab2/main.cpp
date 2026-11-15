@@ -35,15 +35,18 @@ int main() {
     if (number <= 0) {
         std::cout << "Нужно число больше 0\n";
     } else {
-        std::string s = std::to_string(number);
-        int sum = 0, minDigit = 9, maxDigit = 0;
-        std::cout << "Цифры:";
-        for (char c : s) {
-            int d = c - '0';
-            std::cout << ' ' << d;
-            sum += d;
-            if (d < minDigit) minDigit = d;
-            if (d > maxDigit) maxDigit = d;
+        long long x = number;      // копия числа, чтобы не менять введённое
+        int sum = 0;               // сумма цифр
+        int minDigit = 10;         // пока больше любой цифры
+        int maxDigit = -1;         // пока меньше любой цифры
+        std::cout << "Разложение на цифры в обратном порядке:";  // начиная с последней
+        while (x != 0) {
+            int digit = x % 10;      // берём последнюю цифру
+            std::cout << ' ' << digit;
+            sum = sum + digit;       // добавляем цифру к сумме
+            if (digit < minDigit) minDigit = digit;  // запоминаем минимум
+            if (digit > maxDigit) maxDigit = digit;  // запоминаем максимум
+            x = x / 10;              // отбрасываем последнюю цифру
         }
         std::cout << "\nСумма: " << sum << ", минимум: " << minDigit
                   << ", максимум: " << maxDigit << '\n';
