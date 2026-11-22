@@ -53,17 +53,24 @@ int main() {
     }
 
     // 3. Минимум и максимум последовательности
-    std::cout << "\n3) Введите последовательность целых чисел через пробел: ";
+    std::cout << "\n3) Введите последовательность целых чисел (можно в несколько строк).\n"
+                 "   Пустая строка завершает ввод: ";
     std::string line;
-    std::getline(std::cin >> std::ws, line);  // читаем всю строку до Enter
-    std::istringstream stream(line);          // разбираем числа из строки
+    std::getline(std::cin >> std::ws, line);  // первая строка после п.2
 
     long long value, minValue = 0, maxValue = 0;
     int count = 0;
-    while (stream >> value) {
-        if (count == 0 || value < minValue) minValue = value;
-        if (count == 0 || value > maxValue) maxValue = value;
-        ++count;
+
+    // Разбираем числа из каждой строки, пока не встретим пустую строку или EOF.
+    for (;;) {
+        std::istringstream stream(line);      // разбираем числа из текущей строки
+        while (stream >> value) {
+            if (count == 0 || value < minValue) minValue = value;
+            if (count == 0 || value > maxValue) maxValue = value;
+            ++count;
+        }
+        if (!std::getline(std::cin, line)) break;  // конец ввода (EOF)
+        if (line.find_first_not_of(" \t\r\n") == std::string::npos) break;  // пустая строка
     }
     if (count > 0)
         std::cout << "Минимум: " << minValue << ", максимум: " << maxValue << '\n';
